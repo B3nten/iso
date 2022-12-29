@@ -30,8 +30,11 @@ const server = await createServer({
               path.isNewExpression() &&
               path.node?.callee?.name === "UltraAction"
             ) {
-              const fn = path.node.arguments[0].code
-              const fnHash = hash(fn);
+              const fnStart = path.node.arguments[0].start
+              const fnEnd = path.node.arguments[0].end
+              const fn = code.slice(fnStart!, fnEnd!)
+              console.log("BABEL", fn)
+              const fnHash = hash(fn.replaceAll(/[\r\n]+/g,"").replaceAll(" ",""));
               path.replaceWithSourceString(`new UltraAction(${fnHash})`);
               path.skip();
             }

@@ -10,7 +10,13 @@ export class UltraAction {
     }
 
     async run(input: any) {
-        const res = await fetch(`http://localhost:8000/ultraActions/${hash(this._fn.toString())}`, {
+        let path;
+        if(typeof this._fn === "number"){
+            path = this._fn
+        } else {
+            path = hash(this._fn.toString().replaceAll(/[\r\n]+/g,"").replaceAll(" ",""))
+        }
+        const res = await fetch(`http://localhost:8000/ultraActions/${path}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

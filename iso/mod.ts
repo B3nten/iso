@@ -54,9 +54,9 @@ export async function importUltraActions(app: UltraServer) {
       if (!imports) continue
       for (const [key, value] of Object.entries(imports)) {
         if (value instanceof UltraAction) {
-          hono.post(hash(value._fn.toString()).toString(), async (ctx) => {
+          console.log("SERVER", value._fn.toString())
+          hono.post(hash(value._fn.toString().replaceAll(/[\r\n]+/g,"").replaceAll(" ","")).toString(), async (ctx) => {
             const input = await ctx.req.json()
-            console.log("INPUT", input)
             const customContext = buildContext(ctx);
             const returnValue = await value._fn(customContext, input);
             return returnValue;

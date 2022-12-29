@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import useAsset from "ultra/hooks/use-asset.js";
 import { UltraAction } from "../iso/createUltraAction.ts";
 
-export const getUser = new UltraAction(async (ctx, {name}) => {
+export const getUser = new UltraAction(async (ctx, { name }) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  return ctx.json({ message: "Hello world! From " + name});
+  return ctx.json({ message: "Hello world! From " + name });
 });
 
 export default function App() {
