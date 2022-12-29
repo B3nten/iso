@@ -1,20 +1,22 @@
+import { useState } from "react";
 import { useEffect } from "react";
 import useAsset from "ultra/hooks/use-asset.js";
-import { getHomeData } from "./home.server.ts";
+import { UltraAction } from "../iso/createUltraAction.ts";
 
+export const getUser = new UltraAction(async (ctx, {name}) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  return ctx.json({ message: "Hello world! From " + name});
+});
 
 export default function App() {
+  const [message, setMessage] = useState(null);
   useEffect(() => {
-    async function fetchr() {
-      console.log(getHomeData.path)
-      const res = await fetch(getHomeData.path);
-      if(!res.ok) console.log("error");
-      const data = await res.json();
-      console.log(data);
+    async function getData() {
+      const data = await getUser.run({ name: "Benten" });
+      setMessage(data);
     }
-    fetchr();
-  }, [])
-
+    getData();
+  }, []);
   return (
     <html lang="en">
       <head>
@@ -25,29 +27,7 @@ export default function App() {
         <link rel="preload" as="style" href={useAsset("/style.css")} />
         <link rel="stylesheet" href={useAsset("/style.css")} />
       </head>
-      <body>
-        <main>
-          <h1>
-            <span></span>__<span></span>
-          </h1>
-          <p>
-            Welcome to{" "}
-            <strong>Ultra</strong>. This is a barebones starter for your web
-            app.
-          </p>
-          <p>
-            Take{" "}
-            <a
-              href="https://ultrajs.dev/docs"
-              target="_blank"
-            >
-              this
-            </a>, you may need it where you are going. It will show you how to
-            customise your routing, data fetching, and styling with popular
-            libraries.
-          </p>
-        </main>
-      </body>
+      <body>{message && <div>{message.message}</div>}</body>
     </html>
   );
 }
