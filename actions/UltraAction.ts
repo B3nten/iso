@@ -13,7 +13,7 @@ export class UltraAction<
   }
   async fetch(...args: Tail<Parameters<FN>>) {
     let path;
-    if (typeof this._fn === "number") {
+    if (typeof this._fn === "string") {
       path = this._fn;
     } else {
       console.log(typeof Deno !== "undefined" ? "Deno" : "no deno")

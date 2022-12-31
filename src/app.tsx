@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import useAsset from "ultra/hooks/use-asset.js";
-import { UltraAction } from "../iso/createUltraAction.ts";
-import { hash } from "../iso/utils.ts";
+import { UltraAction } from "ultra/actions";
 
 export const getUser = new UltraAction(async (ctx, {name}: {name: string}) => {
-  hash("abc");
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return ctx.response.json({ data: "Hello world! From " + name });
 });

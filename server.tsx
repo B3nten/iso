@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.164.0/http/server.ts";
 import { createServer } from "ultra/server.ts";
-import { cleanClientCode, importUltraActions } from "./iso/mod.ts";
 import App from "./src/app.tsx";
+import { loadUltraActions, compileUltraActions } from "ultra/actions";
 
 const server = await createServer({
   importMapPath:
@@ -9,18 +9,17 @@ const server = await createServer({
       ? import.meta.resolve("./importMap.dev.json")
       : import.meta.resolve("./importMap.json"),
   browserEntrypoint: import.meta.resolve("./client.tsx"),
+  //@ts-ignore ultra error
   compilerOptions: {
     hooks: {
       beforeTransform: (code, file) => {
-        console.log(file.path)
-        return cleanClientCode(code, file.path)
+        return compileUltraActions(code, file.path)
       }
     },
   },
 });
 
-await importUltraActions(server);
-console.log(server.routes)
+await loadUltraActions(server);
 
 server.get("*", async (context) => {
   /**
