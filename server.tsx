@@ -4,9 +4,7 @@ import App from "./src/app.tsx";
 import { compileUltraActions, loadUltraActions } from "ultra/actions";
 
 const server = await createServer({
-  importMapPath: Deno.env.get("ULTRA_MODE") === "development"
-    ? import.meta.resolve("./importMap.dev.json")
-    : import.meta.resolve("./importMap.json"),
+  importMapPath: import.meta.resolve("./importMap.json"),
   browserEntrypoint: import.meta.resolve("./client.tsx"),
   //@ts-ignore ultra error
   compilerOptions: {
