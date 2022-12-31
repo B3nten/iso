@@ -14,6 +14,7 @@ const server = await createServer({
       },
     },
   },
+  mode: "development"
 });
 
 await loadUltraActions(server);
