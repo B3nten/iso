@@ -1,20 +1,19 @@
 import { serve } from "https://deno.land/std@0.164.0/http/server.ts";
 import { createServer } from "ultra/server.ts";
 import App from "./src/app.tsx";
-import { loadUltraActions, compileUltraActions } from "ultra/actions";
+import { compileUltraActions, loadUltraActions } from "ultra/actions";
 
 const server = await createServer({
-  importMapPath:
-    Deno.env.get("ULTRA_MODE") === "development"
-      ? import.meta.resolve("./importMap.dev.json")
-      : import.meta.resolve("./importMap.json"),
+  importMapPath: Deno.env.get("ULTRA_MODE") === "development"
+    ? import.meta.resolve("./importMap.dev.json")
+    : import.meta.resolve("./importMap.json"),
   browserEntrypoint: import.meta.resolve("./client.tsx"),
   //@ts-ignore ultra error
   compilerOptions: {
     hooks: {
       beforeTransform: (code, file) => {
-        return compileUltraActions(code, file.path)
-      }
+        return compileUltraActions(code, file.path);
+      },
     },
   },
 });

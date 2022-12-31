@@ -5,7 +5,7 @@ type Tail<T> = T extends [unknown, ...infer Tail] ? Tail : never;
 
 export class UltraAction<
   Input extends Record<string, unknown>,
-  FN extends (ctx: CustomContext, input: Input) => unknown
+  FN extends (ctx: CustomContext, input: Input) => unknown,
 > {
   _fn: FN;
   constructor(fn: FN) {
@@ -13,10 +13,9 @@ export class UltraAction<
   }
   async fetch(...args: Tail<Parameters<FN>>) {
     let path;
-    if (typeof this._fn === "string") {
+    if (typeof this._fn === "number") {
       path = this._fn;
     } else {
-      console.log(typeof Deno !== "undefined" ? "Deno" : "no deno")
       path = funcToHash(this._fn.toString());
     }
     const res = await fetch(`http://localhost:8000/ultraActions/${path}`, {

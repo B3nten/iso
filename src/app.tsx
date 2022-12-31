@@ -1,19 +1,22 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import useAsset from "ultra/hooks/use-asset.js";
-import { UltraAction } from "ultra/actions";
+import { UltraAction } from "../actions/UltraAction.ts";
 
-export const getUser = new UltraAction(async (ctx, {name}: {name: string}) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return ctx.response.json({ data: "Hello world! From " + name });
-});
+export const getUser = new UltraAction(
+  async (ctx, { name }: { name: string }) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return ctx.response.json({ data: "Hello world! From " + name });
+  },
+);
 
 export default function App() {
-  const [message, setMessage] =
-    useState<Awaited<ReturnType<typeof getUser.fetch>>>();
+  const [message, setMessage] = useState<
+    Awaited<ReturnType<typeof getUser.fetch>>
+  >();
   useEffect(() => {
     async function getData() {
-      const data = await getUser.fetch({name: "benton"});
+      const data = await getUser.fetch({ name: "benton" });
       setMessage(data);
     }
     getData();
