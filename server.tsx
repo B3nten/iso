@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.164.0/http/server.ts";
-import { createServer } from "ultra/server.ts";
+import { createServer } from "https://raw.githubusercontent.com/B3nten/ultra/jit/server.ts";
 import App from "./src/app.tsx";
 import { compileUltraActions, loadUltraActions } from "ultra/actions";
 
