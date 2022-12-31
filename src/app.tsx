@@ -2,17 +2,20 @@ import { useState } from "react";
 import { useEffect } from "react";
 import useAsset from "ultra/hooks/use-asset.js";
 import { UltraAction } from "../iso/createUltraAction.ts";
+import { hash } from "../iso/utils.ts";
 
-export const getUser = new UltraAction(async (ctx, { name }) => {
+export const getUser = new UltraAction(async (ctx, {name}: {name: string}) => {
+  hash("abc");
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  return ctx.json({ message: "Hello world! From " + name });
+  return ctx.response.json({ data: "Hello world! From " + name });
 });
 
 export default function App() {
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] =
+    useState<Awaited<ReturnType<typeof getUser.fetch>>>();
   useEffect(() => {
     async function getData() {
-      const data = await getUser.run({ name: "Benten" });
+      const data = await getUser.fetch({name: "benton"});
       setMessage(data);
     }
     getData();
@@ -27,7 +30,7 @@ export default function App() {
         <link rel="preload" as="style" href={useAsset("/style.css")} />
         <link rel="stylesheet" href={useAsset("/style.css")} />
       </head>
-      <body>{message && <div>{message.message}</div>}</body>
+      <body>{message && <div>{message.data}</div>}</body>
     </html>
   );
 }
