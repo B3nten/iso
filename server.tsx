@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.164.0/http/server.ts";
 import { createServer } from "https://raw.githubusercontent.com/B3nten/ultra/jit/server.ts";
 import App from "./src/app.tsx";
 import { compileUltraActions, loadUltraActions } from "ultra/actions";
+import { swcCompileUltraActions } from "./actions/compileUltraActions.ts";
 
 const server = await createServer({
   importMapPath: import.meta.resolve("./importMap.json"),
@@ -10,6 +11,7 @@ const server = await createServer({
   compilerOptions: {
     hooks: {
       beforeTransform: (code, file) => {
+        // return swcCompileUltraActions(code, file)
         return compileUltraActions(code, file.path);
       },
     },
